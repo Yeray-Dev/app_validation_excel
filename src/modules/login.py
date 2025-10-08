@@ -4,6 +4,9 @@ from db.models import User
 from db.verify_user import verify_user
 from modules.navegation import main_app
 
+from db.database import engine
+from sqlalchemy import inspect
+
 def list_user():
     db = SessionLocal()
     users = db.query(User).all()
@@ -28,6 +31,7 @@ def login():
         if st.button("Crear usuario"):
             st.session_state.page = "create_user"
             st.rerun()
+
     if st.button("Ver usuarios"):
         users = list_user()
         for u in users:
