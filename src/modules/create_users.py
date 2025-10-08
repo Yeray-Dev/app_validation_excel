@@ -28,13 +28,16 @@ def input_info():
     last_name = st.text_input("Last Name")
     login = st.text_input("Login")
     password = st.text_input("Password", type="password")
-    if st.button("Enviar"):
-        if not all([name, last_name, login, password]):
-            st.warning("Es obligatorio rellenar todos los campos.")
-        else:
-            if creat_user(name, last_name, login, password):
-                st.write("Registro completo")
-    if st.button("Atras"):
-        st.session_state.page = 'login'
-        st.rerun()
-    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Enviar"):
+            if not all([name, last_name, login, password]):
+                st.warning("Es obligatorio rellenar todos los campos.")
+            else:
+                if creat_user(name, last_name, login, password):
+                    st.write("Registro completo")
+    with col2:
+        if st.button("Atras"):
+            st.session_state.page = 'logged_in'
+            st.rerun()
+
