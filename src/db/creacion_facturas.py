@@ -1,7 +1,13 @@
 import streamlit as st
 from db.database import SessionLocal
 from db.models import Factura
-
+#! TESTING
+def ver_facturas():
+    db = SessionLocal()
+    facturas = db.query(Factura).all()
+    db.close()
+    return facturas
+#! END TESTING
 def crear_factura(df):
 
     session = SessionLocal()

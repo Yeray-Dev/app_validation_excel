@@ -7,11 +7,13 @@ from modules.navegation import main_app
 from db.database import engine
 from sqlalchemy import inspect
 
+#! TESTING
 def list_user():
     db = SessionLocal()
     users = db.query(User).all()
     db.close()
     return users
+#! END TESTING
 
 def login():
     st.title("Validador de facturas 🧾")
@@ -31,8 +33,9 @@ def login():
         if st.button("Crear usuario"):
             st.session_state.page = "create_user"
             st.rerun()
-
+    #! TESTING
     if st.button("Ver usuarios"):
         users = list_user()
         for u in users:
             st.write(f"{u.id} | {u.nombre} {u.apellidos} | {u.login} | {u.nivel}")
+    #! END TESTING
