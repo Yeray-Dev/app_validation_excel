@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Date, Float, Boolean
+from sqlalchemy import Column, Integer, String, Date, Float, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 from db.database import Base
 
 class User(Base):
@@ -9,7 +10,9 @@ class User(Base):
     apellidos = Column(String, nullable=False)
     login = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
-    nivel = Column(String, default="user")
+    nivel = Column(String, default="User") #? User - Evaluator - Admin - SuAdmin
+
+    facturas = relationship("Factura", back_populates="usuario")
 
 class Factura(Base):
     __tablename__ = "facturas"
@@ -34,3 +37,7 @@ class Factura(Base):
     notas = Column(String)
     validacion = Column(Boolean, default=False, nullable=False)
     estado_validacion = Column(Boolean, default=False, nullable=True)
+    
+
+    usuario_id = Column(Integer, ForeignKey("users.id"))
+    usuario = relationship("User", back_populates="facturas")

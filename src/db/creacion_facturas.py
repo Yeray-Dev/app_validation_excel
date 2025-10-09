@@ -1,6 +1,6 @@
 import streamlit as st
 from db.database import SessionLocal
-from db.models import Factura
+from db.models import Factura, User
 #! TESTING
 def ver_facturas():
     db = SessionLocal()
