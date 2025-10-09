@@ -10,7 +10,7 @@ class User(Base):
     apellidos = Column(String, nullable=False)
     login = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
-    nivel = Column(String, default="User") #? User - Evaluator - Admin - SuAdmin
+    nivel = Column(Integer, default=0) #? User - Evaluator - Admin - SuAdmin
 
     facturas = relationship("Factura", back_populates="usuario")
 

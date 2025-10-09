@@ -12,6 +12,6 @@ def verify_user(login, password):
         return False, "User incorrecto."
     
     if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
-        return True, f"Login correcto ({user.nivel}.)"
+        return user
     else:
         return False, "Contraseña incorrecta."

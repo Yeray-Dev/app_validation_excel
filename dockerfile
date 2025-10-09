@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir \
+    python3-dev \
+    libffi-dev\
     streamlit \
     streamlit-aggrid \
     pandas \

@@ -23,9 +23,15 @@ def login():
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Entrar"):
-            if verify_user(login, password):
+            user = verify_user(login, password)
+            if user:
                 st.session_state.logged_in = True
                 st.session_state.page = 'main'
+                st.session_state.user = {
+                    "id" : user.id,
+                    "nombre" : user.nombre,
+                    "rol" : user.nivel
+                }
                 st.rerun()
                 
 

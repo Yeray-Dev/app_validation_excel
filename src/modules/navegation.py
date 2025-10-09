@@ -11,19 +11,21 @@ from db.creacion_facturas import ver_facturas
 
 def main_app():
     st.title("Validacion de Facturas")
-    if pm.can_add_notes()
-    upload_file = st.file_uploader("Selecciona tu archivo Excel", type=["xlsx", "xls"])
+    user = st.session_state.user
+    user_rol = user["rol"]
+    if pm.can_upload_excel(user_rol):
+        upload_file = st.file_uploader("Selecciona tu archivo Excel", type=["xlsx", "xls"])
+        if upload_file:
+            df = pd.read_excel(upload_file)
+            st.write("Vista previa del Excel")
+            if st.button("Guardar factura"):
+                crear_factura(df)
     #! TESTING
     if st.button("Mostrar facturas abiertas"):
         vista_facturas = ver_facturas()
         for u in vista_facturas:
             st.write(f"{u.id} {u.n_factura} | {u.validacion} | {u.estado_validacion}")
     #! END TESTING
-    if upload_file:
-        df = pd.read_excel(upload_file)
-        st.write("Vista previa del Excel")
-        if st.button("Guardar factura"):
-            crear_factura(df)
         # # st.dataframe(df)
 
         # # gb = GridOptionsBuilder.from_dataframe(df)
