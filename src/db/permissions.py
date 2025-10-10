@@ -18,8 +18,8 @@ def can_view_own(user_rol):
         return False
 
 
-def can_validate(user_rol):
-    return user_rol.nivel >= 0
+# def can_validate(user_rol):
+#     return user_rol.nivel >= 0
 
 def can_add_notes(user_rol):
     return user_rol.nivel >= 1
