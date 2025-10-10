@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from modules.login import login
 from modules.create_users import input_info
-from modules.navegation import main_app
+from modules.main import main_app
 from db.database import SessionLocal
 from db.models import User
 

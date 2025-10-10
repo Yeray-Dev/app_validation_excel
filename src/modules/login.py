@@ -2,8 +2,9 @@ import streamlit as st
 from db.database import SessionLocal
 from db.models import User
 from db.verify_user import verify_user
-from modules.navegation import main_app
-
+from modules.main import main_app
+from st_aggrid import AgGrid, GridOptionsBuilder #! TESTING
+import pandas as pd #! TESTING
 from db.database import engine
 from sqlalchemy import inspect
 
@@ -45,3 +46,4 @@ def login():
         for u in users:
             st.write(f"{u.id} | {u.nombre} {u.apellidos} | {u.login} | {u.nivel}")
     #! END TESTING
+    
