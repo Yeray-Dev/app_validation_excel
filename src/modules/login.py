@@ -1,6 +1,6 @@
 import streamlit as st
 from db.database import SessionLocal
-from db.models import User
+from db.models import User, Factura
 from db.verify_user import verify_user
 from modules.main import main_app
 from st_aggrid import AgGrid, GridOptionsBuilder #! TESTING
@@ -14,6 +14,12 @@ def list_user():
     users = db.query(User).all()
     db.close()
     return users
+def list_invoices():
+    db = SessionLocal()
+    invoice = db.query(Factura).all()
+    db.close()
+    return invoice
+
 #! END TESTING
 
 def login():
@@ -45,5 +51,9 @@ def login():
         users = list_user()
         for u in users:
             st.write(f"{u.id} | {u.nombre} {u.apellidos} | {u.login} | {u.nivel}")
+    if st.button("Ver facturas"):
+        users = list_invoices()
+        for u in users:
+            st.write(f"{u.id} | {u.n_factura} {u.usuario_id}")
     #! END TESTING
-    
+

@@ -12,7 +12,11 @@ def can_upload_excel(user_rol):
         return False
 
 def can_view_own(user_rol):
-    return user_rol.nivel == 0
+    if user_rol == 0:
+        return True
+    else:
+        return False
+
 
 def can_validate(user_rol):
     return user_rol.nivel >= 0

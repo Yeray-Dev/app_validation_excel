@@ -17,7 +17,7 @@ class User(Base):
 class Factura(Base):
     __tablename__ = "facturas"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     n_factura = Column(String, nullable=False)
     fecha_Emision = Column(Integer, index=True)
     id_paciente = Column(Integer, nullable=False)
@@ -37,7 +37,5 @@ class Factura(Base):
     notas = Column(String)
     validacion = Column(Boolean, default=False, nullable=False)
     estado_validacion = Column(Boolean, default=False, nullable=True)
-    
-
     usuario_id = Column(Integer, ForeignKey("users.id"))
     usuario = relationship("User", back_populates="facturas")
