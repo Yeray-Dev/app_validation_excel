@@ -1,4 +1,4 @@
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode
 import pandas as pd
 
 def render_aggrid(
@@ -34,19 +34,21 @@ def render_aggrid(
                     )
                 else:
                     gb.configure_column(col, editable=True)
-
     if hidden_columns:
         for col in hidden_columns:
             if col in df.columns:
                 gb.configure_column(col, hide = True)
 
+    gb.configure_selection(selection_mode = "single", use_checkbox = False)
     grid_options = gb.build()
+
 
     grid_response = AgGrid(
         df,
         gridOptions = grid_options,
         height = height,
         update_mode = GridUpdateMode.VALUE_CHANGED,
-        allow_unsafe_jscode = True 
+        allow_unsafe_jscode = True,
+        enable_enterprise_modules=False 
     )
     return grid_response

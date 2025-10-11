@@ -17,18 +17,10 @@ from datetime import date, datetime
 import pandas as pd
 
 def crear_factura(df, user_id):
-    """
-    Crea facturas a partir de un DataFrame de Excel y las guarda en la base de datos,
-    asignando el usuario que sube el archivo.
-    Convierte tipos de datos y maneja valores faltantes para evitar errores de SQLAlchemy.
-    """
-
-    # Crear sesión
     session = SessionLocal()
     success_counter = 0
     error_messages = []
 
-    # Columnas válidas
     columnas_validas = [
         "n_factura", "fecha_Emision", "id_paciente", "nombre_paciente",
         "fecha_atencion", "servicios", "codigo_procedimiento", "subtotal",
@@ -37,11 +29,9 @@ def crear_factura(df, user_id):
         "estado_validacion"
     ]
 
-    # Seleccionar columnas válidas y forzar copia para evitar SettingWithCopyWarning
     df = df.loc[:, df.columns.isin(columnas_validas)].copy()
     df.reset_index(drop=True, inplace=True)
 
-    # Función para convertir fechas
     def convertir_fecha(valor):
         if pd.isna(valor):
             return None
@@ -52,7 +42,6 @@ def crear_factura(df, user_id):
         except Exception:
             return None
 
-    # Aplicar conversión de fechas
     if "fecha_Emision" in df.columns:
         df["fecha_Emision"] = df["fecha_Emision"].apply(
             lambda x: int(x) if pd.notna(x) and str(x).isdigit() else None
@@ -60,17 +49,15 @@ def crear_factura(df, user_id):
     if "fecha_atencion" in df.columns:
         df["fecha_atencion"] = df["fecha_atencion"].apply(convertir_fecha)
 
-    # Iterar sobre filas
     for index, row in df.iterrows():
         try:
             data = row.to_dict()
 
-            # Convertir campos numéricos a tipos nativos de Python
             for col in ["subtotal", "impuestos", "total"]:
                 if col in data and pd.notna(data[col]):
                     data[col] = float(data[col])
                 else:
-                    data[col] = 0.0  # o None según prefieras
+                    data[col] = None
 
             for col in ["id_paciente", "codigo_procedimiento"]:
                 if col in data and pd.notna(data[col]):
@@ -78,17 +65,14 @@ def crear_factura(df, user_id):
                 else:
                     data[col] = None
 
-            # Asegurar valores booleanos
             for col in ["validacion", "estado_validacion"]:
                 if col in data and pd.notna(data[col]):
                     data[col] = bool(data[col])
                 else:
                     data[col] = False
 
-            # Asignar el usuario
             data["usuario_id"] = user_id
 
-            # Crear factura y añadir a sesión
             factura = Factura(**data)
             session.add(factura)
             success_counter += 1
@@ -97,7 +81,6 @@ def crear_factura(df, user_id):
             session.rollback()
             error_messages.append(f"Fila {index + 1}: Error de integridad - {str(e)}")
 
-    # Commit y mensajes de Streamlit
     try:
         session.commit()
         st.success(f"{success_counter} Facturas guardadas correctamente")

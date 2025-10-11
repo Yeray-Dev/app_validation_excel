@@ -18,7 +18,7 @@ class Factura(Base):
     __tablename__ = "facturas"
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    n_factura = Column(String, nullable=False)
+    n_factura = Column(String, unique=True, nullable=False) ##. Actualizar BD par que n_facturas sea unico.
     fecha_Emision = Column(Integer, index=True)
     id_paciente = Column(Integer, nullable=False)
     nombre_paciente = Column(String, nullable=False)

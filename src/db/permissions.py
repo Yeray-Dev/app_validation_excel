@@ -17,12 +17,8 @@ def can_view_own(user_rol):
     else:
         return False
 
-
-# def can_validate(user_rol):
-#     return user_rol.nivel >= 0
-
-def can_add_notes(user_rol):
-    return user_rol.nivel >= 1
+# def can_add_notes(user_rol):
+#     return user_rol.nivel >= 1 
 
 def can_view_all(user_rol):
     return user_rol.nivel >= 1
@@ -31,4 +27,7 @@ def can_close(user_rol):
     return user_rol.nivel >= 2
 
 def can_change_roles(user_rol):
-    return user_rol.nivel == 3
+    if user_rol == 3:
+        return True
+    else:
+        return False

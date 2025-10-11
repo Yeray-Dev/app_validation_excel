@@ -3,10 +3,14 @@ import pandas as pd
 import db.permissions as pm
 from db.database import SessionLocal
 from db.models import Factura, User
-from db.crear_facturas import crear_factura, ver_facturas
-from modules.aggrid_config import render_aggrid
+from db.utils.crear_facturas import crear_factura, ver_facturas
+from db.utils.mod_rol import mod_rol
+from modules.utils.aggrid_config import render_aggrid
 from modules.utils.b_save import save_changes
+import streamlit_js_eval
+import streamlit.components.v1 as components
 from sqlalchemy.inspection import inspect
+
 
 def list_invoices(user_id, all = False):
     db = SessionLocal()
@@ -40,4 +44,5 @@ def main_app():
         grid_responde = render_aggrid(df, editable_columns=["validacion"], hidden_columns=False)
         updated_df = grid_responde["data"]
         save_changes(updated_df)
-
+    if pm.can_change_roles(user_rol):
+        mod_rol()

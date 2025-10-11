@@ -1,7 +1,7 @@
 import streamlit as st
 from db.database import SessionLocal
 from db.models import User, Factura
-from db.verify_user import verify_user
+from db.utils.verify_user import verify_user
 from modules.main import main_app
 from st_aggrid import AgGrid, GridOptionsBuilder #! TESTING
 import pandas as pd #! TESTING
