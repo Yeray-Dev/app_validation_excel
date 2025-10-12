@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import db.permissions as pm
 from db.database import SessionLocal
-from db.models import Factura, User
+from db.models import Factura
 
 def save_changes(updated_df):
     if st.button("Guardar Cambios"):

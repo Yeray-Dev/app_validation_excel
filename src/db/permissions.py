@@ -15,10 +15,7 @@ def can_view_own(user_rol):
     if user_rol == 0:
         return True
     else:
-        return False
-
-# def can_add_notes(user_rol):
-#     return user_rol.nivel >= 1 
+        return False 
 
 def can_view_all(user_rol):
     return user_rol.nivel >= 1

@@ -1,6 +1,7 @@
 import streamlit as st
 from db.database import SessionLocal
 from db.models import User
+from modules.utils.b_save import save_changes
 
 ROLES = {
     "Usuario": 0,
@@ -31,5 +32,14 @@ def mod_rol():
     )
 
     rol_nuevo_valor = ROLES[rol_nuevo_nombre]
-
+    if st.button("Guardar Cambios"):
+        db = SessionLocal()
+        user = db.query(User).filter(User.id == usuario_id).first()
+        if user:
+            user.nivel = rol_nuevo_valor
+            db.commit()
+            st.success(f"Rol de {user.nombre} has sido actualizado con exito.")
+        else:
+            st.error("No se ha encontrado usuario.")
+        db.close()
     st.write(f"Usuario: {usuario_seleccionado} | Nuevo rol: {rol_nuevo_nombre} ({rol_nuevo_valor})")
