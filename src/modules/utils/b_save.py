@@ -11,6 +11,7 @@ def save_changes(updated_df):
             factura = db.query(Factura).filter(Factura.id == row["id"]).first()
             if factura:
                 factura.validacion = bool(row["validacion"])
+                factura.estado_validacion = bool(row["estado_validacion"])
         db.commit()
         db.close()
         st.success("Base de datos actualizada.")

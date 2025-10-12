@@ -29,37 +29,42 @@ def main_app():
     user = st.session_state.user
     user_rol = user["rol"]
     user_id = user["id"]
-    if pm.can_upload_excel(user_rol):
+    # if pm.can_upload_excel(user_rol):
+
+    if pm.is_user(user_rol):
         upload_file = st.file_uploader("Selecciona tu archivo Excel", type=["xlsx", "xls"])
         if upload_file:
             df = pd.read_excel(upload_file)        
             render_aggrid(df)
             if st.button("subir factura"):
                 crear_factura(df, user_id)
-    if pm.can_view_own(user_rol):
         df = list_invoices(user_id, False)
+        df = df[df["estado_validacion"] == False]
         for col in df.columns:
             if col != "validacion" and col != "estado_validacion":
                 df[col] = df[col].apply(lambda x: str(x) if x is not None else "")
         grid_responde = render_aggrid(df, editable_columns=["validacion"], hidden_columns=False)
         updated_df = grid_responde["data"]
         save_changes(updated_df)
-    if pm.can_view_no_validation(user_rol):
+
+    if pm.is_evaluator(user_rol):
         df = list_invoices(user_id, True)
         df = df[df["validacion"] == False]
+        df = df[df["estado_validacion"] == False]
         for col in df.columns:
             if col != "validacion" and col != "estado_validacion":
                 df[col] = df[col].apply(lambda x: str(x) if x is not None else "")
         grid_responde = render_aggrid(df, editable_columns=["validacion"], hidden_columns=False)
         updated_df = grid_responde["data"]
         save_changes(updated_df)
-    if pm.can_close(user_rol):
+
+    if pm.is_admin(user_rol):
         df = list_invoices(user_id, True)
         for col in df.columns:
             if col != "validacion" and col != "estado_validacion":
                 df[col] = df[col].apply(lambda x: str(x) if x is not None else "")
-        grid_responde = render_aggrid(df, editable_columns=["validacion"], hidden_columns=False)
+        grid_responde = render_aggrid(df, editable_columns=["validacion", "estado_validacion"], hidden_columns=False)
         updated_df = grid_responde["data"]
         save_changes(updated_df)
-    if pm.can_change_roles(user_rol):
+    if pm.is_suadmin(user_rol):
         mod_rol()
