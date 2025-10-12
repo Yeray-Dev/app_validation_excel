@@ -44,5 +44,22 @@ def main_app():
         grid_responde = render_aggrid(df, editable_columns=["validacion"], hidden_columns=False)
         updated_df = grid_responde["data"]
         save_changes(updated_df)
+    if pm.can_view_no_validation(user_rol):
+        df = list_invoices(user_id, True)
+        df = df[df["validacion"] == False]
+        for col in df.columns:
+            if col != "validacion" and col != "estado_validacion":
+                df[col] = df[col].apply(lambda x: str(x) if x is not None else "")
+        grid_responde = render_aggrid(df, editable_columns=["validacion"], hidden_columns=False)
+        updated_df = grid_responde["data"]
+        save_changes(updated_df)
+    if pm.can_close(user_rol):
+        df = list_invoices(user_id, True)
+        for col in df.columns:
+            if col != "validacion" and col != "estado_validacion":
+                df[col] = df[col].apply(lambda x: str(x) if x is not None else "")
+        grid_responde = render_aggrid(df, editable_columns=["validacion"], hidden_columns=False)
+        updated_df = grid_responde["data"]
+        save_changes(updated_df)
     if pm.can_change_roles(user_rol):
         mod_rol()
